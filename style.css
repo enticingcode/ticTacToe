@@ -58,6 +58,11 @@ html, body {
     align-items: center;
 }
 
+main {
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+}
 #gameContainer {
     width: 600px;
     height: 600px;
@@ -66,7 +71,17 @@ html, body {
     
 }
 
-
 .quadrant {
     border: 1px solid black;
+}
+
+#buttonContainer {
+	display:flex;
+	justify-content: space-between;
+	width: 270px;
+	padding: 5px;
+	margin-top: 10px;
+}
+.playerChoice {
+	padding: 10px 20px;
 }
