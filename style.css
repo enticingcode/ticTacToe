@@ -73,6 +73,10 @@ main {
 
 .quadrant {
     border: 1px solid black;
+	display:flex;
+}
+.X {
+	display:none;
 }
 
 #buttonContainer {
@@ -84,4 +88,8 @@ main {
 }
 .playerChoice {
 	padding: 10px 20px;
+}
+
+.displayChoice {
+	display:block;
 }
