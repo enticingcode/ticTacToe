@@ -39,7 +39,7 @@ const gameBoard = (() => {
             player2.turn = false;
             player1.turn = true;
         }
-
+        buttonListener();
     }
 
 
@@ -58,12 +58,24 @@ const gameBoard = (() => {
         else player2.mark = "X"
         log(gameBoard);
         displayChoice();
+
     }
 
-    playerChoice.forEach(button => {
-        button.addEventListener("click", assignPlayer);
-    });
+    let buttonListener = () => {
+        if (player1.mark == undefined) {
+            playerChoice.forEach(button => {
+                button.addEventListener("click", assignPlayer);
+            })
+        }
+        else if (player1.mark != undefined) {
+            playerChoice.forEach(button => {
+                button.removeEventListener("click", assignPlayer);
+            })
+        }
 
+    };
+
+    buttonListener();
 
     let winningCombos = [
         //ROWS//
