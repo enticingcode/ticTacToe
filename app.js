@@ -5,25 +5,43 @@ let playerChoice = document.querySelectorAll(".playerChoice");
 
 
 const gameBoard = (() => {
-
+    // CREATE PLAYERS AND CHOICES // 
     const playerFactory = (name, mark, turn) => {
         return { name, mark, turn };
     }
-
-    let player1 = playerFactory('player1', undefined, true);
+    let player1 = playerFactory('player1', undefined, false);
     let player2 = playerFactory('player2', undefined, false);
 
 
 
 
+    // DISPLAYING PLAYER MARKS // 
+    function displayChoice() {
+        document.querySelector("#choiceDisplay").innerText = `Player 1: ${player1.mark} || Player 2: ${player2.mark}`;
+    }
+
+
+    // GAME LOGIC HERE // 
+    function gameBoardLogic() {
+
+    }
+
+
     // MARKING THE GAMEBOARD //
     function placeMark() {
-        if (player1.mark == "X" && this.lastChild == null) {
-            let newX = document.createElement("img");
-            newX.setAttribute("src", "/icons/x.svg")
-            this.appendChild(newX);
+        if (player1.turn == true && this.lastChild == null) {
+            this.innerText = player1.mark;
+            player1.turn = false;
+            player2.turn = true;
         }
+        else if (player2.turn == true && this.lastChild == null) {
+            this.innerText = player2.mark;
+            player2.turn = false;
+            player1.turn = true;
+        }
+
     }
+
 
     quadrant.forEach(cell => {
         cell.addEventListener("click", placeMark)
@@ -33,11 +51,13 @@ const gameBoard = (() => {
     // PLAYER SELECTION //
     const assignPlayer = function () {
         player1.mark = this.value;
+        player1.turn = true;
         if (player1.mark == "X") {
             player2.mark = "O"
         }
         else player2.mark = "X"
         log(gameBoard);
+        displayChoice();
     }
 
     playerChoice.forEach(button => {
