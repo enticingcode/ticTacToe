@@ -14,6 +14,7 @@ const gameBoard = (() => {
 
     let xMoves = [];
     let oMoves = [];
+    let winner;
 
 
     // DISPLAYING PLAYER MARKS // 
@@ -22,9 +23,9 @@ const gameBoard = (() => {
     }
 
 
+
     // CHECK WINNER // 
-    function checkWinner() {
-        let winner;
+    function checkWinner(mark) {
         let winningCombos = [
             //ROWS//
             [0, 1, 2],
@@ -39,29 +40,48 @@ const gameBoard = (() => {
             [6, 4, 2]
         ]
 
-        // EXAMPLES OF MOVES TO CHECK // 
-        // xMoves:  
-        // Array(4) [ 0, 4, 6, 3 ]
+        // problem here is how to stop it from running after its been proven true. // 
 
-        // oMoves:  
-        // Array(3) [ 2, 8, 1 ]
+        // let checker = function (arr, target) {
+        //     target.forEach(function (combos) {
+        //         if (combos.every(number => arr.includes(number))) {
+        //             log(combos.every(number => arr.includes(number)));
+        //             winner = mark;
+        //             log(winner)
+        //         }
+        //         else return;
+        //     })
+        // }
 
-        // LOOPS THROUGH ALL NUMBERS IN ARRAY OF WINNERS //
-        // winningCombos.forEach(e => e.forEach(num => log(num)));
+
+        // still stuck on stopping the function from turning winner back to undefined. 
+        /// wait tho. because it returns undefined, but it shouldn't right? because the mark never is undefined. at least upon entering mark on the board. hold up.
 
 
         let checker = function (arr, target) {
             for (let i = 0; i < target.length; i++) {
-                if (target[i].every(e => arr.includes(e)) == true) {
-                    return winner
+                // i = [0,1,2]
+                // winner = [0, 3, 6]
+                if (target[i].every(e => arr.includes(e))) {
+                    winner = mark;
+                    break;
                 }
             }
         }
-
         checker(xMoves, winningCombos);
-        checker(oMoves, winningCombos);
-
+        delcareWinner();
+        log(winner);
     }
+
+
+    function delcareWinner() {
+        if (winner != null) {
+            return winner;
+
+        }
+        markingListener();
+    }
+
 
 
     // MARKING THE GAMEBOARD //
@@ -73,24 +93,34 @@ const gameBoard = (() => {
             player1.turn = false;
             player2.turn = true;
             xMoves.push(this.cellNumber = Number(cellNumber));
+            checkWinner("x");
         }
         else if (player2.turn == true && this.lastChild == null) {
             this.innerText = player2.mark;
             player2.turn = false;
             player1.turn = true;
             oMoves.push(this.cellNumber = Number(cellNumber));
+            checkWinner("O");
         }
         buttonListener();
         checkWinner();
-        log("xMoves: ", xMoves);
-        log("oMoves: ", oMoves);
+        // log("xMoves: ", xMoves);
+        // log("oMoves: ", oMoves);
     }
 
 
-    quadrant.forEach(cell => {
-        cell.addEventListener("click", placeMark)
-    });
-
+    function markingListener() {
+        if (winner == undefined) {
+            quadrant.forEach(cell => {
+                cell.addEventListener("click", placeMark)
+            });
+        }
+        else if (winner != undefined) {
+            quadrant.forEach(cell => {
+                cell.removeEventListener("click", placeMark)
+            });
+        }
+    }
 
     // PLAYER SELECTION //
     const assignPlayer = function () {
@@ -120,13 +150,13 @@ const gameBoard = (() => {
     };
 
     buttonListener();
+    markingListener();
 
 
 
 
 
-
-    return { player1, player2, xMoves }
+    return { player1, player2, xMoves, winner }
 })();
 
 
