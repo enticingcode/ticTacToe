@@ -24,6 +24,7 @@ const gameBoard = (() => {
 
     // CHECK WINNER // 
     function checkWinner() {
+        let winner;
         let winningCombos = [
             //ROWS//
             [0, 1, 2],
@@ -52,22 +53,14 @@ const gameBoard = (() => {
         let checker = function (arr, target) {
             for (let i = 0; i < target.length; i++) {
                 if (target[i].every(e => arr.includes(e)) == true) {
-                    log('you won');
+                    return winner
                 }
             }
-
         }
+
         checker(xMoves, winningCombos);
-        // checker(oMoves, winningCombos);
+        checker(oMoves, winningCombos);
 
-
-
-
-        // winningCombos.forEach(e => {
-        //     log(e);
-
-        // });
-        // xMoves.includes();
     }
 
 
@@ -88,9 +81,9 @@ const gameBoard = (() => {
             oMoves.push(this.cellNumber = Number(cellNumber));
         }
         buttonListener();
+        checkWinner();
         log("xMoves: ", xMoves);
         log("oMoves: ", oMoves);
-        checkWinner();
     }
 
 
