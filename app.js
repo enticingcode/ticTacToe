@@ -12,7 +12,8 @@ const gameBoard = (() => {
     let player1 = playerFactory('player1', undefined, false);
     let player2 = playerFactory('player2', undefined, false);
 
-
+    let xMoves = [];
+    let oMoves = [];
 
 
     // DISPLAYING PLAYER MARKS // 
@@ -21,25 +22,75 @@ const gameBoard = (() => {
     }
 
 
-    // GAME LOGIC HERE // 
-    function gameBoardLogic() {
+    // CHECK WINNER // 
+    function checkWinner() {
+        let winningCombos = [
+            //ROWS//
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            //COLUMNS//
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            //DIAGONALS//
+            [0, 4, 8],
+            [6, 4, 2]
+        ]
 
+        // EXAMPLES OF MOVES TO CHECK // 
+        // xMoves:  
+        // Array(4) [ 0, 4, 6, 3 ]
+
+        // oMoves:  
+        // Array(3) [ 2, 8, 1 ]
+
+        // LOOPS THROUGH ALL NUMBERS IN ARRAY OF WINNERS //
+        // winningCombos.forEach(e => e.forEach(num => log(num)));
+
+
+        let checker = function (arr, target) {
+            for (let i = 0; i < target.length; i++) {
+                if (target[i].every(e => arr.includes(e)) == true) {
+                    log('you won');
+                }
+            }
+
+        }
+        checker(xMoves, winningCombos);
+        // checker(oMoves, winningCombos);
+
+
+
+
+        // winningCombos.forEach(e => {
+        //     log(e);
+
+        // });
+        // xMoves.includes();
     }
 
 
     // MARKING THE GAMEBOARD //
     function placeMark() {
+        let cellNumber = this.dataset.cellIndex;
+        // log(cellNumber)
         if (player1.turn == true && this.lastChild == null) {
             this.innerText = player1.mark;
             player1.turn = false;
             player2.turn = true;
+            xMoves.push(this.cellNumber = Number(cellNumber));
         }
         else if (player2.turn == true && this.lastChild == null) {
             this.innerText = player2.mark;
             player2.turn = false;
             player1.turn = true;
+            oMoves.push(this.cellNumber = Number(cellNumber));
         }
         buttonListener();
+        log("xMoves: ", xMoves);
+        log("oMoves: ", oMoves);
+        checkWinner();
     }
 
 
@@ -77,52 +128,16 @@ const gameBoard = (() => {
 
     buttonListener();
 
-    let winningCombos = [
-        //ROWS//
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        //COLUMNS//
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        //DIAGONALS//
-        [0, 4, 8],
-        [6, 4, 2]
-    ]
 
-    return { player1, player2, winningCombos }
+
+
+
+
+    return { player1, player2, xMoves }
 })();
 
 
 
-
-
-// let winningCombos = [
-//     //ROWS//
-//     [0, 1, 2],
-//     [3, 4, 5],
-//     [6, 7, 8],
-//     //COLUMNS//
-//     [0, 3, 6],
-//     [1, 4, 7],
-//     [2, 5, 8],
-//     //DIAGONALS//
-//     [0, 4, 8],
-//     [6, 4, 2]
-// ]
-
-// log(winningCombos);
-
-
-
-
-
-
-
-// quadrant.forEach(selection => {
-//     selection.addEventListener("click",);
-// });
 
 
 
