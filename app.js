@@ -40,6 +40,9 @@ const gameBoard = (() => {
             [6, 4, 2]
         ]
 
+
+
+
         // problem here is how to stop it from running after its been proven true. // 
 
         // let checker = function (arr, target) {
@@ -47,30 +50,24 @@ const gameBoard = (() => {
         //         if (combos.every(number => arr.includes(number))) {
         //             log(combos.every(number => arr.includes(number)));
         //             winner = mark;
-        //             log(winner)
         //         }
-        //         else return;
         //     })
+        // 
+
+
+        // let checker = function (arr, target) {
+        //     for (let i = 0; i < target.length; i++) {
+        //         target.every((number) => arr.includes(number))
+        //     }
         // }
 
-
-        // still stuck on stopping the function from turning winner back to undefined. 
-        /// wait tho. because it returns undefined, but it shouldn't right? because the mark never is undefined. at least upon entering mark on the board. hold up.
-
-
-        let checker = function (arr, target) {
-            for (let i = 0; i < target.length; i++) {
-                // i = [0,1,2]
-                // winner = [0, 3, 6]
-                if (target[i].every(e => arr.includes(e))) {
-                    winner = mark;
-                    break;
-                }
-            }
+        let checker = function (arr, search) {
+            arr.every(row => row.includes(search))
         }
-        checker(xMoves, winningCombos);
+        log(checker(winningCombos, xMoves));
+
         delcareWinner();
-        log(winner);
+        // log(winner);
     }
 
 
@@ -87,13 +84,13 @@ const gameBoard = (() => {
     // MARKING THE GAMEBOARD //
     function placeMark() {
         let cellNumber = this.dataset.cellIndex;
-        // log(cellNumber)
+
         if (player1.turn == true && this.lastChild == null) {
             this.innerText = player1.mark;
             player1.turn = false;
             player2.turn = true;
             xMoves.push(this.cellNumber = Number(cellNumber));
-            checkWinner("x");
+            checkWinner("X");
         }
         else if (player2.turn == true && this.lastChild == null) {
             this.innerText = player2.mark;
@@ -103,7 +100,6 @@ const gameBoard = (() => {
             checkWinner("O");
         }
         buttonListener();
-        checkWinner();
         // log("xMoves: ", xMoves);
         // log("oMoves: ", oMoves);
     }
@@ -166,27 +162,24 @@ const gameBoard = (() => {
 
 // ======================= TEST GROUNDS ================== //
 
-// function EmployeeDetails() {
-//     var name = "Mayank";
-//     var age = 30;
-//     var designation = "Developer";
-//     var salary = 10000;
 
-//     var calculateBonus = function (amount) {
-//         return salary = salary + amount;
-//     }
 
-//     return {
-//         name: name,
-//         age: age,
-//         designation: designation,
-//         calculateBonus: calculateBonus,
-//         salary
-//     }
+
+// let winningCombos = [
+//     [0, 3, 6]
+// ]
+
+
+// let xMoves = [0, 2, 3, 6]
+
+
+// let checkWinner = function (arr, search) {
+//     arr.index
 // }
 
-// var newEmployee = EmployeeDetails()
-
-// var userName = newEmployee.calculateBonus(1000);
-
+// log(checkWinner(winningCombos, xMoves))
 //========================================================//
+
+
+// I kinda understand what you're getting at, would that mean using indexof might be a better approach? For example I guess I'm stumped on figuring out how to check if 
+// `winningCombos = [0, 3, 6]` is present within something like `xMoves = [0, 2, 3, 6]`
