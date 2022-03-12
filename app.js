@@ -2,26 +2,26 @@ const log = console.log;
 
 const quadrant = document.querySelectorAll(".quadrant");
 let playerChoice = document.querySelectorAll(".playerChoice");
+const reset = document.querySelector("#resetbtn");
 
-
+// GAME LOGIC //
 const gameBoard = (() => {
     // CREATE PLAYERS AND CHOICES // 
     const playerFactory = (name, mark, turn) => {
         return { name, mark, turn };
     }
-    let player1 = playerFactory('player1', undefined, false);
-    let player2 = playerFactory('player2', undefined, false);
+    let player1 = playerFactory('player1', null, false);
+    let player2 = playerFactory('player2', null, false);
 
     let xMoves = [];
     let oMoves = [];
-    let winner;
+    let winner = null;
 
 
     // DISPLAYING PLAYER MARKS // 
     function displayChoice() {
         document.querySelector("#choiceDisplay").innerText = `Player 1: ${player1.mark} || Player 2: ${player2.mark}`;
     }
-
 
 
     // CHECK WINNER // 
@@ -41,42 +41,29 @@ const gameBoard = (() => {
         ]
 
 
-
-
-        // problem here is how to stop it from running after its been proven true. // 
-
-        // let checker = function (arr, target) {
-        //     target.forEach(function (combos) {
-        //         if (combos.every(number => arr.includes(number))) {
-        //             log(combos.every(number => arr.includes(number)));
-        //             winner = mark;
-        //         }
-        //     })
-        // 
-
-
-        // let checker = function (arr, target) {
-        //     for (let i = 0; i < target.length; i++) {
-        //         target.every((number) => arr.includes(number))
-        //     }
-        // }
-
-        let checker = function (arr, search) {
-            arr.every(row => row.includes(search))
+        let checker = (combos, arr) => {
+            // loops through winning combos arrays //
+            for (let i = 0; i < combos.length; i++) {
+                if (combos[i].every(e => arr.includes(e))) {
+                    return gameBoard.winner = mark;
+                }
+            }
         }
-        log(checker(winningCombos, xMoves));
 
-        delcareWinner();
-        // log(winner);
+        checker(winningCombos, xMoves);
+        checker(winningCombos, oMoves);
+        delcareWinner(gameBoard.winner);
     }
 
 
-    function delcareWinner() {
+    function delcareWinner(winner) {
         if (winner != null) {
-            return winner;
+            quadrant.forEach(cell => {
+                cell.removeEventListener("click", placeMark)
+            });
+            return alert(`Congrats, ${winner} wins`);
 
         }
-        markingListener();
     }
 
 
@@ -84,38 +71,35 @@ const gameBoard = (() => {
     // MARKING THE GAMEBOARD //
     function placeMark() {
         let cellNumber = this.dataset.cellIndex;
-
         if (player1.turn == true && this.lastChild == null) {
             this.innerText = player1.mark;
             player1.turn = false;
             player2.turn = true;
-            xMoves.push(this.cellNumber = Number(cellNumber));
-            checkWinner("X");
+            xMoves.push(cellNumber = Number(cellNumber));
+            checkWinner(player1.mark);
         }
         else if (player2.turn == true && this.lastChild == null) {
             this.innerText = player2.mark;
             player2.turn = false;
             player1.turn = true;
-            oMoves.push(this.cellNumber = Number(cellNumber));
-            checkWinner("O");
+            oMoves.push(cellNumber = Number(cellNumber));
+            checkWinner(player2.mark);
         }
         buttonListener();
-        // log("xMoves: ", xMoves);
-        // log("oMoves: ", oMoves);
     }
 
 
-    function markingListener() {
-        if (winner == undefined) {
+    function markingListener(winner) {
+        if (winner == null) {
             quadrant.forEach(cell => {
                 cell.addEventListener("click", placeMark)
             });
         }
-        else if (winner != undefined) {
-            quadrant.forEach(cell => {
-                cell.removeEventListener("click", placeMark)
-            });
-        }
+        // else if (winner != null) {
+        //     // quadrant.forEach(cell => {
+        //     //     cell.removeEventListener("click", placeMark)
+        //     // });
+        // }
     }
 
     // PLAYER SELECTION //
@@ -132,12 +116,12 @@ const gameBoard = (() => {
     }
 
     let buttonListener = () => {
-        if (player1.mark == undefined) {
+        if (player1.mark == null) {
             playerChoice.forEach(button => {
                 button.addEventListener("click", assignPlayer);
             })
         }
-        else if (player1.mark != undefined) {
+        else if (player1.mark != null) {
             playerChoice.forEach(button => {
                 button.removeEventListener("click", assignPlayer);
             })
@@ -145,16 +129,48 @@ const gameBoard = (() => {
 
     };
 
+
+    let resetGame = function () {
+        quadrant.forEach(cell => {
+            log(cell.innerText = "");
+        });
+        xMoves = [];
+        oMoves = [];
+        document.querySelector("#choiceDisplay").innerText = ``;
+        player1.mark = null;
+        player2.mark = null;
+        buttonListener();
+        markingListener();
+        gameBoard.winner = null;
+        log('hi');
+    }
+
+
+    reset.addEventListener("click", resetGame);
     buttonListener();
     markingListener();
 
 
 
 
-
-    return { player1, player2, xMoves, winner }
+    return { winner }
+    // return { player1, player2, xMoves, winner }
 })();
 
+// GAMEBOARD APPEARANCE //
+const appearance = (() => {
+    const startBtn = document.querySelector("startBtn");
+
+    function startGame() {
+        log(startBtn);
+        startBtn.addEventListener("click", designStart);
+    }
+
+    startGame();
+
+
+    return {}
+})();
 
 
 
@@ -162,24 +178,61 @@ const gameBoard = (() => {
 
 // ======================= TEST GROUNDS ================== //
 
+// let sayHello = function (name) {
+//     let text = "Hello, " + name;
+//     return function () {
+//         console.log(text);
+//     }
+// }
+
 
 
 
 // let winningCombos = [
-//     [0, 3, 6]
+//     //ROWS//
+//     [0, 1, 2],
+//     [3, 4, 5],
+//     [6, 7, 8],
+//     [0, 3, 6],
+//     [1, 4, 7],
+//     [2, 5, 8],
+//     [0, 4, 8],
+//     [6, 4, 2]
 // ]
 
+// let xMoves = [0, 1, 3]
+// let winner;
 
-// let xMoves = [0, 2, 3, 6]
 
+// // PROTECT THIS CODE WITH YOUR LIFE AND MEMORIZE IT FOOL //
 
-// let checkWinner = function (arr, search) {
-//     arr.index
+// let checker = (combos, arr) => {
+//     // loops through winning combos arrays //
+//     for (let i = 0; i < combos.length; i++) {
+//         if (combos[i].every(e => arr.includes(e))) {
+//             return "winner";
+//         }
+//         else return false;
+//     }
 // }
 
-// log(checkWinner(winningCombos, xMoves))
+// log(checker(winningCombos, xMoves))
+
+
+
+// let testArray = [3, 2, 17]
+
+// log(xMoves.includes(3));
+// log(xMoves.some(e => testArray.includes(3)))
+
+// let checker = function (arr, search) {
+//     arr.some(function (row) {
+//         row.includes(search)
+//     });
+// }
+
+// log(winningCombos)
+// log(xMoves)
 //========================================================//
 
 
-// I kinda understand what you're getting at, would that mean using indexof might be a better approach? For example I guess I'm stumped on figuring out how to check if 
-// `winningCombos = [0, 3, 6]` is present within something like `xMoves = [0, 2, 3, 6]`
