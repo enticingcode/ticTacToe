@@ -4,6 +4,45 @@ const quadrant = document.querySelectorAll(".quadrant");
 let playerChoice = document.querySelectorAll(".playerChoice");
 const reset = document.querySelector("#resetbtn");
 
+
+
+// GAMEBOARD APPEARANCE //
+const appearance = (() => {
+
+    const startBtn = document.querySelector("#startBtn");
+    const header = document.querySelector("#header");
+    const gameContainer = document.querySelector("#gameContainer");
+
+
+    function startGame() {
+        log(startBtn);
+        startBtn.addEventListener("click", designStart);
+    }
+    function startDelete() {
+        startBtn.style.display = "none";
+    }
+
+    function displayGrid() {
+        gameContainer.classList.add("displayContainer");
+
+        playerChoice.forEach((button) => {
+            button.classList.add("displayButtons")
+
+        })
+    }
+
+    function designStart() {
+        header.classList.add("transitionStart");
+        startBtn.classList.add("deleteStart");
+        startBtn.addEventListener('transitionend', startDelete);
+        header.addEventListener('transitionend', displayGrid);
+    };
+
+    startGame();
+
+})();
+
+
 // GAME LOGIC //
 const gameBoard = (() => {
     // CREATE PLAYERS AND CHOICES // 
@@ -157,20 +196,6 @@ const gameBoard = (() => {
     // return { player1, player2, xMoves, winner }
 })();
 
-// GAMEBOARD APPEARANCE //
-const appearance = (() => {
-    const startBtn = document.querySelector("startBtn");
-
-    function startGame() {
-        log(startBtn);
-        startBtn.addEventListener("click", designStart);
-    }
-
-    startGame();
-
-
-    return {}
-})();
 
 
 

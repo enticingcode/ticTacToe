@@ -62,14 +62,22 @@ main {
 	display:flex;
 	flex-direction: column;
 	align-items: center;
+	width: 800px;
+	height: 800px;
 }
 #gameContainer {
     width: 600px;
     height: 600px;
-	/* display:none; */
-    display:grid;
+	display:none;
+	opacity: 0;
     grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
-    
+}
+
+.displayContainer {
+	transition-property: all;
+	display:grid !important;
+	opacity: 100 !important;
+	transition-duration: 6s;
 }
 
 .quadrant {
@@ -95,6 +103,7 @@ main {
 }
 .playerChoice {
 	padding: 10px 20px;
+	display:none;
 }
 
 .displayChoice {
@@ -110,16 +119,40 @@ main {
 	font-size: 1.5rem;
 	padding: 10px;
 	margin: 10px;
+	display:none;
 }
 
 #header {
+	position: absolute;
+	top:35%;
 	font-size: 3rem;
 	font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande';
 	margin: 10px 0px 20px;
-
+	position:relative;
 }
 
 #startBtn {
 	padding: 5px 10px;
 	font-size:1.3rem;
+	position: absolute;
+	top:47%;
+}
+
+.transitionStart {
+	transition-property:all;
+	transform: translateY(-330px);
+	transition-duration: 1s;
+}
+
+.deleteStart {
+	opacity: 0;
+	transition-duration:1s;
+	transition-property: all;
+}
+
+.displayButtons {
+	transition-property: all;
+	display:grid !important;
+	opacity: 100 !important;
+	transition-duration: 5s;
 }
